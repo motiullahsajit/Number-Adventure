@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# Generate a random number between 1 and 100
+target=$(( (RANDOM % 100) + 1 ))
+
+# Initialize variables
+guess=0
+attempts=0
+highscore=0
+
+# Function to display instructions
+display_instructions() {
+    echo "Welcome to the Number Guessing Game!"
+    echo "I'm thinking of a number between 1 and 100. Can you guess it?"
+    echo "Try to guess the number. I'll tell you if your guess is too high or too low."
+    echo "To exit the game, enter 'q' or 'quit'."
+    echo "Good luck!"
+}
+
+# Function to start a new game
+new_game() {
+    target=$(( (RANDOM % 100) + 1 ))
+    guess=0
+    attempts=0
+    echo "New game started. Guess the number!"
+}
+
+# Main game loop
+display_instructions
+
+while true; do
+    read -p "Enter your guess: " input
+
+    # Check if the input is "q" or "quit" to exit the game
+    if [[ "$input" == "q" || "$input" == "quit" ]]; then
+        echo "Thanks for playing! Your highscore is $highscore."
+        break
+    fi
+
+    # Check if the input is a valid number
+    if ! [[ "$input" =~ ^[0-9]+$ ]]; then
+        echo "Invalid input. Please enter a number."
+        continue
+    fi
+
+    guess=$input
+    ((attempts++))
+
+    # Compare the guess with the target number
+    if ((guess == target)); then
+        echo "Congratulations! You guessed the correct number in $attempts attempts."
+        if ((highscore == 0 || attempts < highscore)); then
+            highscore=$attempts
+            echo "New highscore!"
+        fi
+        new_game
+    elif ((guess < target)); then
+        echo "Too low. Try again."
+    else
+        echo "Too high. Try again."
+    fi
+
+ 
