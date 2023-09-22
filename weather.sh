@@ -74,11 +74,11 @@ get_weather() {
     fi
 
     # Parse the JSON response to get relevant weather information
-    description=$(jq -r '.weather[0].description' weather_data.json)
-    temperature=$(jq -r '.main.temp' weather_data.json)
-    humidity=$(jq -r '.main.humidity' weather_data.json)
-    wind_speed=$(jq -r '.wind.speed' weather_data.json)
-    wind_deg=$(jq -r '.wind.deg' weather_data.json)
+    description=$(grep -o '"description":"[^"]*' weather_data.json | cut -d'"' -f4)
+    temperature=$(grep -o '"temp":[^,]*' weather_data.json | cut -d':' -f2)
+    humidity=$(grep -o '"humidity":[^,]*' weather_data.json | cut -d':' -f2)
+    wind_speed=$(grep -o '"speed":[^,]*' weather_data.json | cut -d':' -f2)
+    wind_deg=$(grep -o '"deg":[^,]*' weather_data.json | cut -d':' -f2)
 
     # Display weather information
     echo "Location: $LOCATION"
