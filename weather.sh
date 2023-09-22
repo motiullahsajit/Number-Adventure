@@ -64,8 +64,8 @@ API_URL="http://api.openweathermap.org/data/2.5/weather?q=$LOCATION&appid=$API_K
 
 # Function to fetch and display weather information
 get_weather() {
-    # Use cURL to fetch weather data from OpenWeatherMap API
-    weather_data=$(curl -s "$API_URL")
+    # Use wget to fetch weather data from OpenWeatherMap API
+    wget -qO- "$API_URL" > weather_data.json
 
     # Check if there was an error fetching data
     if [ $? -ne 0 ]; then
@@ -74,11 +74,11 @@ get_weather() {
     fi
 
     # Parse the JSON response to get relevant weather information
-    description=$(echo "$weather_data" | jq -r '.weather[0].description')
-    temperature=$(echo "$weather_data" | jq -r '.main.temp')
-    humidity=$(echo "$weather_data" | jq -r '.main.humidity')
-    wind_speed=$(echo "$weather_data" | jq -r '.wind.speed')
-    wind_deg=$(echo "$weather_data" | jq -r '.wind.deg')
+    description=$(jq -r '.weather[0].description' weather_data.json)
+    temperature=$(jq -r '.main.temp' weather_data.json)
+    humidity=$(jq -r '.main.humidity' weather_data.json)
+    wind_speed=$(jq -r '.wind.speed' weather_data.json)
+    wind_deg=$(jq -r '.wind.deg' weather_data.json)
 
     # Display weather information
     echo "Location: $LOCATION"
@@ -87,6 +87,9 @@ get_weather() {
     echo "Humidity: $humidity%"
     echo "Wind Speed: $wind_speed $WIND_UNIT"
     echo "Wind Direction: $wind_deg°"
+
+    # Clean up the temporary JSON file
+    rm weather_data.json
 }
 
 # Call the function to get and display weather information
