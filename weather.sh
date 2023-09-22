@@ -25,10 +25,24 @@ set_user_preferences() {
     read -p "Enter default location: " DEFAULT_LOCATION
     read -p "Enter default temperature unit (Celsius or Fahrenheit): " DEFAULT_TEMP_UNIT
     read -p "Enter default wind speed unit (m/s or mph): " DEFAULT_WIND_UNIT
+    # Save preferences to a configuration file
+    echo "DEFAULT_LOCATION=\"$DEFAULT_LOCATION\"" > preferences.conf
+    echo "DEFAULT_TEMP_UNIT=\"$DEFAULT_TEMP_UNIT\"" >> preferences.conf
+    echo "DEFAULT_WIND_UNIT=\"$DEFAULT_WIND_UNIT\"" >> preferences.conf
+    echo "Preferences saved."
+}
+
+# Function to load user preferences from the configuration file
+load_user_preferences() {
+    if [ -f "preferences.conf" ]; then
+        source "preferences.conf"
+    fi
 }
 
 # Function to fetch and display weather information
 get_weather() {
+    load_user_preferences
+
     # Check if the location is specified; otherwise, use the default location
     if [ -z "$LOCATION" ]; then
         LOCATION="$DEFAULT_LOCATION"
@@ -67,6 +81,8 @@ get_weather() {
 
 # Function to fetch and display weather forecast
 get_forecast() {
+    load_user_preferences
+
     # Check if the location is specified; otherwise, use the default location
     if [ -z "$LOCATION" ]; then
         LOCATION="$DEFAULT_LOCATION"
@@ -88,7 +104,7 @@ get_forecast() {
     # Display forecast for the upcoming days
     echo "Weather Forecast for $LOCATION:"
     # Adjust the date format in the grep command to match the API response
-    cat forecast_data.json | grep -A 3 '"dt_txt": "'$(date +'%Y-%m-%d' --date='+1 day') | grep -E 'description|temp'
+    cat forecast_data.json | grep -A 6 '"dt_txt": "'$(date +'%Y-%m-%d') | grep -E 'description|temp'
 
     # Clean up the temporary JSON file
     rm forecast_data.json
