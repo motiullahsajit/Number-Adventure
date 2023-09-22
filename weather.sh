@@ -16,6 +16,7 @@ show_usage() {
     echo "  -l, --location   Specify the location (e.g., city name, ZIP code, coordinates)"
     echo "  -t, --temperature-unit  Specify the temperature unit (Celsius or Fahrenheit)"
     echo "  -w, --wind-unit  Specify the wind speed unit (m/s or mph)"
+    echo "  -f, --forecast    Show weather trends and forecasts"
     exit 1
 }
 
@@ -79,8 +80,8 @@ get_weather() {
     rm weather_data.json
 }
 
-# Function to fetch and display weather forecast
-get_forecast() {
+# Function to fetch and display weather trends and forecasts
+get_weather_trends_and_forecasts() {
     load_user_preferences
 
     # Check if the location is specified; otherwise, use the default location
@@ -96,14 +97,12 @@ get_forecast() {
 
     # Check if there was an error fetching data
     if [ $? -ne 0 ]; then
-        echo "Error fetching weather forecast data. Please check your internet connection or API key."
+        echo "Error fetching weather trends and forecasts data. Please check your internet connection or API key."
         exit 1
     fi
 
-    # Parse the JSON response to get forecast information
-    # Display forecast for the upcoming days
-    echo "Weather Forecast for $LOCATION:"
-    # Adjust the date format in the grep command to match the API response
+    # Display weather trends and forecasts
+    echo "Weather Trends and Forecasts for $LOCATION:"
     cat forecast_data.json | grep -A 6 '"dt_txt": "'$(date +'%Y-%m-%d') | grep -E 'description|temp'
 
     # Clean up the temporary JSON file
@@ -115,14 +114,14 @@ show_main_menu() {
     while true; do
         echo "Weather Information Menu:"
         echo "1. Current Weather"
-        echo "2. Weather Forecast"
+        echo "2. Weather Trends and Forecasts"
         echo "3. Set User Preferences"
         echo "4. Enter Custom Location"
         echo "5. Exit"
         read -p "Select an option (1/2/3/4/5): " choice
         case "$choice" in
             1) get_weather ;;
-            2) get_forecast ;;
+            2) get_weather_trends_and_forecasts ;;
             3) set_user_preferences ;;
             4) read -p "Enter custom location: " LOCATION; get_weather ;;
             5) exit ;;
