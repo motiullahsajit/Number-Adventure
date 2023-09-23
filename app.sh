@@ -1,45 +1,37 @@
 #!/bin/bash
 
-# Function to generate a random number within a given range
 generate_random_number() {
   local min=$1
   local max=$2
   echo $((RANDOM % (max - min + 1) + min))
 }
 
-# Function to send a message to another player (used in multiplayer mode)
 send_message() {
   local message="$1"
   echo "$message" > /dev/tcp/$opponent_ip/$opponent_port
 }
 
-# Function to receive a message from another player (used in multiplayer mode)
 receive_message() {
   nc -l -p $player_port
 }
 
-# Initialize an associative array to store user profiles (user ID => passcode)
 declare -A user_profiles
 
-# Function to create a new user profile
 create_user_profile() {
   read -p "Enter a new user ID: " user_id
   read -s -p "Enter a passcode: " passcode
   echo  
 
-  # Store the user profile in a file (you can use a different file path)
   echo "$user_id:$passcode:0" >> user_profiles.txt
 
   echo "User profile created for user ID: $user_id"
 }
 
-# Function to authenticate a user
 authenticate_user() {
   read -p "Enter your user ID: " user_id
   read -s -p "Enter your passcode: " passcode
   echo  
 
-  # Check if the user ID and passcode match a user profile in the file
   if grep -q "^$user_id:$passcode:" user_profiles.txt; then
     echo "Authentication successful. Welcome, $user_id!"
     return 0
@@ -49,12 +41,10 @@ authenticate_user() {
   fi
 }
 
-# Function to update the leaderboard with a user's score
 update_leaderboard() {
   local user_id="$1"
   local score="$2"
   
-  # Find and update the user's score in the leaderboard file
   sed -i "s/^$user_id:[0-9]*$/$user_id:$score/" leaderboard.txt
 }
 
@@ -62,14 +52,12 @@ update_leaderboard() {
 display_leaderboard() {
   clear
   echo "Local Leaderboard:"
-  # Sort the leaderboard by score in descending order
   sort -t: -k2,2nr leaderboard.txt | while IFS=: read -r user_id score; do
     echo "Player $user_id Score: $score"
   done
   read -p "Press Enter to continue..."
 }
 
-# Function to play the single-player game
 play_game() {
   local min=$1
   local max=$2
@@ -113,7 +101,6 @@ play_game() {
   done
 }
 
-# Function to play the multiplayer game
 play_multiplayer_game() {
   clear
   echo "Multiplayer Mode"
@@ -179,24 +166,19 @@ play_multiplayer_game() {
   done
 }
 
-# Determine the user's IP address and generate a random port
 my_ip=$(hostname -I | awk '{print $1}')
 my_port=$(shuf -i 1024-49151 -n 1)
 
-# Check if the leaderboard file exists, and if not, create and initialize it
 leaderboard_file="leaderboard.txt"
 if [ ! -f "$leaderboard_file" ]; then
   touch "$leaderboard_file"
-  # Initialize the leaderboard with default data (you can change this as needed)
   echo "1:0" >> "$leaderboard_file"
   echo "2:0" >> "$leaderboard_file"
 fi
 
-# Initialize scores for player 1 and player 2
 player1_score=0
 player2_score=0
 
-# Main menu loop
 while true; do
   clear
   echo "Number Guessing Adventure - Multiplayer Edition"
@@ -267,10 +249,8 @@ while true; do
         echo "Press Enter to continue..."
         read
 
-        # After successful login, you can allow the user to play a game and update their score
-        play_game 1 100  # Example game, adjust parameters as needed
+        play_game 1 100  
 
-        # After the game, update the user's score in the leaderboard
         update_leaderboard "$user_id" "$score"
       else
         echo "Press Enter to go back to the menu..."
