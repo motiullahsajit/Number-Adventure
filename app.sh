@@ -20,7 +20,7 @@ declare -A user_profiles
 create_user_profile() {
   read -p "Enter a new user ID: " user_id
   read -s -p "Enter a passcode: " passcode
-  echo  
+  echo
 
   echo "$user_id:$passcode:0" >> user_profiles.txt
 
@@ -30,7 +30,7 @@ create_user_profile() {
 authenticate_user() {
   read -p "Enter your user ID: " user_id
   read -s -p "Enter your passcode: " passcode
-  echo  
+  echo
 
   if grep -q "^$user_id:$passcode:" user_profiles.txt; then
     echo "Authentication successful. Welcome, $user_id!"
@@ -44,7 +44,7 @@ authenticate_user() {
 update_leaderboard() {
   local user_id="$1"
   local score="$2"
-  
+
   sed -i "s/^$user_id:[0-9]*$/$user_id:$score/" leaderboard.txt
 }
 
@@ -166,6 +166,71 @@ play_multiplayer_game() {
   done
 }
 
+# Function to play the NumberJack game
+play_numberjack_game() {
+  clear
+  echo "Welcome to NumberJack Game!"
+  ch=0
+
+  while [ $ch -ne 3 ]; do
+    echo "NumberJack Menu:"
+    echo "1. Play NumberJack"
+    echo "2. Instructions"
+    echo "3. Return to Main Menu"
+    read -p "Enter your choice: " ch
+
+    case $ch in
+      1)
+        x=0
+        c=0
+        p=0
+        read -p "Enter any number between 0 and 9: " n
+        while [ $c -eq 0 ]; do
+          x=11
+          r=($(shuf -i 0-9 -n 10))
+          echo "${r[@]} "
+          for i in {1..10}; do
+            a[$i]=$i
+          done
+          echo "${a[@]} "
+          read -t 5 -p "Enter the index of your number: " x
+          if [[ $? -gt 128 ]]; then
+            c=1
+            break
+          fi
+          if [ ${r[$(($x))-1]} -eq $n ]; then
+            echo "Great"
+            ((p=p+1))
+          else
+            c=1
+            break
+          fi
+        done
+        ;;
+      2)
+        echo "HELP: INSTRUCTIONS TO PLAY THE NUMBERJACK GAME. "
+        echo "1. Select any number between 0 and 9 (inclusive) i.e 0 and 9 are accepted."
+        echo "2. Two lists will appear in front of you."
+        echo "3. The upper list will have a list of randomly shuffled numbers between 0 and 9."
+        echo "4. See if you can find your chosen number in that list within 5 seconds."
+        echo "5. Then you have to enter the index of that number indicated in the second list below."
+        echo "6. The game will continue until you are correct and enter the number on time (before 5 sec)."
+        ;;
+      3)
+        break
+        ;;
+      *)
+        echo "Invalid choice. Please select a valid option."
+        ;;
+    esac
+
+    if [ $c -eq 1 ]; then
+      echo -e "\nGAME OVER\n"
+      echo "You scored $p points"
+    fi
+  done
+}
+
 my_ip=$(hostname -I | awk '{print $1}')
 my_port=$(shuf -i 1024-49151 -n 1)
 
@@ -176,9 +241,6 @@ if [ ! -f "$leaderboard_file" ]; then
   echo "2:0" >> "$leaderboard_file"
 fi
 
-player1_score=0
-player2_score=0
-
 while true; do
   clear
   echo "Number Guessing Adventure - Multiplayer Edition"
@@ -188,7 +250,8 @@ while true; do
   echo "4. Leaderboard"
   echo "5. Create User Profile"
   echo "6. Login"
-  echo "7. Quit"
+  echo "7. NumberJack Game"
+  echo "8. Quit"
   read -p "Select an option: " choice
 
   case $choice in
@@ -249,7 +312,7 @@ while true; do
         echo "Press Enter to continue..."
         read
 
-        play_game 1 100  
+        play_game 1 100
 
         update_leaderboard "$user_id" "$score"
       else
@@ -258,6 +321,9 @@ while true; do
       fi
       ;;
     7)
+      play_numberjack_game
+      ;;
+    8)
       echo "Thanks for playing! Goodbye."
       exit
       ;;
