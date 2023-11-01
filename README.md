@@ -1,81 +1,102 @@
-# Number Adventure
+# Number Adventure & Sudoku Game
 
-Welcome to the Number Adventure ! This is an interactive text-based game that combines a classic number guessing game with the fun of Linux shell commands.
+**Number Adventure & Sudoku Game** is a command-line game that combines a number guessing game, a NumberJack game, and a Sudoku puzzle. It offers an interactive and educational experience for users.
 
 ## Table of Contents
 
-- [Introduction](#introduction)
 - [Features](#features)
-- [Prerequisites](#prerequisites)
-- [How to Play](#how-to-play)
-- [Game Modes](#game-modes)
-- [NumberJack Game](#numberjack-game)
-- [Leaderboard](#leaderboard)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Game Options](#game-options)
+- [Sudoku Rules](#sudoku-rules)
+- [NumberJack Game Instructions](#numberjack-game-instructions)
 - [Contributing](#contributing)
 - [License](#license)
-
-## Introduction
-
-In this game, you have the opportunity to:
-
-- Play a classic number guessing game.
-- Compete with friends in multiplayer mode.
-- Solve puzzles and challenges using Linux shell commands.
-- Create user profiles to track your progress.
-- Check your ranking on the leaderboard.
-
-Are you ready for the adventure?
+- [Acknowledgements](#acknowledgements)
 
 ## Features
 
 - Single-player number guessing game with various difficulty levels.
-- Multiplayer mode to compete with other players.
-- A NumberJack game that challenges your number finding skills.
-- User profile creation and authentication.
-- Leaderboard to see how you stack up against other players.
-- Interactive instructions for each game mode.
+- Multiplayer number guessing game.
+- A NumberJack game for number enthusiasts.
+- A Sudoku puzzle game for Sudoku fans.
+- User profiles and leaderboards.
+- Fun and educational command-line game.
 
-## Prerequisites
+## Getting Started
 
-Before you start, you'll need:
+### Prerequisites
 
-- A Linux environment to run the shell script.
-- Basic familiarity with Linux commands.
+- Linux-based operating system (Tested on Ubuntu).
+- Bash shell.
+- `nc` (netcat) tool for multiplayer mode.
 
-## How to Play
+### Installation
 
-1. Clone or download this repository to your local machine.
-2. Open a terminal and navigate to the game's directory.
-3. Run the script with the command: `./app.sh`.
-4. Follow the on-screen menu options to choose your game mode, create a user profile, and play the games.
+1. Clone the repository:
 
-## Game Modes
+   ```bash
+   git clone https://github.com/your_username/Number-Adventure.git
+   cd Number-Adventure
+   ```
 
-1. **Single Player:** Choose from various difficulty levels and guess the correct number within a time limit.
-2. **Multiplayer:** Host a game or join another player's game and compete to guess the number faster.
-3. **NumberJack Game:** Challenge your number finding skills in this fun mini-game.
+2. Run the game:
 
-## NumberJack Game
+   ```bash
+   ./app.sh
+   ```
 
-- In the NumberJack game, select a number between 0 and 9.
-- You will see a shuffled list of numbers from 0 to 9.
-- Your task is to find your chosen number and enter its index.
-- You have 5 seconds to make the correct selection.
-- Keep playing until you get the number or run out of time.
+## Usage
 
-## Leaderboard
+Follow the on-screen instructions to navigate through the game's menu. Choose game options and enjoy the different game modes.
 
-- Check your ranking and compare your scores with other players.
-- The leaderboard is updated after each game and shows your progress.
+## Game Options
+
+- Single Player: Choose from various difficulty levels to play a number guessing game.
+- Multiplayer: Play a multiplayer number guessing game with a friend.
+- Instructions: View game instructions.
+- Leaderboard: Check the leaderboard to see how you rank.
+- Create User Profile: Create a user profile to save your scores.
+- Login: Authenticate using your user profile.
+- Sudoku: Play the classic Sudoku puzzle.
+- NumberJack Game: Play a fun NumberJack game.
+- Quit: Exit the game.
+
+## Sudoku Rules
+
+The Sudoku game included follows the classic Sudoku rules:
+
+1. Fill the 9x9 grid with numbers from 1 to 9.
+2. Each row must contain each number from 1 to 9 exactly once.
+3. Each column must also contain each number from 1 to 9 exactly once.
+4. Each of the nine 3x3 sub-grids must contain each number from 1 to 9 exactly once.
+
+## NumberJack Game Instructions
+
+1. Select any number between 0 and 9 (inclusive).
+2. Two lists will appear, the upper list contains a shuffled list of numbers from 0 to 9.
+3. Find your chosen number within 5 seconds.
+4. Enter the index of your chosen number indicated in the second list.
+5. The game continues until you are correct or run out of time (5 seconds).
 
 ## Contributing
 
-If you'd like to contribute to this project, feel free to open an issue or submit a pull request. We appreciate your help in making the game even better!
+If you would like to contribute to this project, feel free to open issues or submit pull requests.
 
 ## License
 
-This game is open-source and distributed under the [MIT License](LICENSE). You are welcome to use and modify it as you see fit.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Have fun and enjoy the Number Adventure!
+## Acknowledgements
 
-Happy gaming!
+- This project was created as a fun and educational way to explore Linux shell scripting.
+- Inspired by various number games and classic puzzles.
+
+Enjoy playing the Number Adventure & Sudoku Game!
+
+```
+
+Please make sure to replace `your_username` with your actual GitHub username and customize the content as needed to match your project.
+```
